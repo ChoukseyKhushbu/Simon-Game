@@ -1,13 +1,17 @@
 var userClickedPattern=[]; //to store user's pattern of colour
 var gamePattern=[]; //to store computer's pattern
 var level = 0; //starting
-
+var start=false;
 var buttonColours=['red','blue','green','yellow'];
 
-
-$(document).keyup(function(){
-  if(level==0){             //key press only when game starts
-    $("h1").text("level "+ level);
+$(document).keypress(function(e){
+  // console.log(start + " "+ e.keyCode);
+  if(start==false && e.keyCode==13){
+    start=true;    //issue - this value of start is not changing in actual hence this code is running again and agian
+    window.location.href="play.html";
+  }
+  else if(level==0){             //key press only when game starts
+    $("#level-title").text("level "+ level);
     nextSequence();
   }
 });
@@ -29,7 +33,7 @@ function nextSequence(){
 
   userClickedPattern=[]; //to clear the previous stored pattern of user
   ++level;
-  $("h1").text("level "+ level);
+  $("#level-title").text("level "+ level);
 
   var randomNumber = Math.floor(Math.random() * 4);
   var randomChosenColor=buttonColours[randomNumber]; //generating random colour
@@ -59,7 +63,7 @@ function checkAnswer(currentLevel){
     setTimeout(()=>{
       $("body").removeClass("game-over");
     },200);
-    $("h1").text("Game Over, Press Any Key To Restart");
+    $("#level-title").text("Game Over, Press Any Key To Restart");
     //staring again
     restart();
   }
@@ -68,6 +72,7 @@ function checkAnswer(currentLevel){
 function restart(){
   level=0;
   gamePattern=[];
+  start=true;
 }
 
 function playSound(name){
